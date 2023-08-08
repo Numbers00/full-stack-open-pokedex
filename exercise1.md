@@ -8,3 +8,4 @@ Answer: Gitlab CI, Bamboo, Circle CI, TeamCity, Travis CI, to name a few.
 
 3. Would this setup be better in a self-hosted or a cloud-based environment? Why? What information would you need to make that decision?
 Answer: From what I gather, beginners would find a cloud-based environment advantageous due to its simplicity and easy maintenance, making it a suitable choice for this project. With experience, they can decide whether to transition to a self-hosted setup. Factors like uptime, control, security, and scalability should be weighed, as both environments have their merits and drawbacks.
+
