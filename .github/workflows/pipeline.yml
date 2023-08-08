@@ -16,4 +16,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - run: npm run eslint # names are optional
+      - run: npm run build
+      - run: npm run test
+      
       
