@@ -21,14 +21,12 @@ jobs:
       - run: npm run eslint # names are optional
       - run: npm run build
       - run: npm run test
-
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-
       - name: Trigger deployment
         # if it's a PR that's merged, not just a new PR request
         if: github.event_name == 'push'
@@ -38,6 +36,10 @@ jobs:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: '0'
       - name: Bump version and push tag
         if: github.event_name == 'push'
         uses: anothrNick/github-tag-action@1.67.0
