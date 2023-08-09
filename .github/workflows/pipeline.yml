@@ -29,5 +29,6 @@ jobs:
           wait-on: http://localhost:5000
 
       - name: Trigger deployment
-        if: ${{ success() }} # only runs if none of the previous steps failed or have been canceled
+        # only run if no prev step fails/gets canceled, and if it's a PR that's merged, not just a new PR request
+        if: ${{ success() && github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
