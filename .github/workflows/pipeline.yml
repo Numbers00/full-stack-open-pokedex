@@ -21,6 +21,7 @@ jobs:
       - run: npm run eslint # names are optional
       - run: npm run build
       - run: npm run test
+
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
@@ -29,6 +30,18 @@ jobs:
           wait-on: http://localhost:5000
 
       - name: Trigger deployment
-        # only run if no prev step fails/gets canceled, and if it's a PR that's merged, not just a new PR request
-        if: ${{ success() && github.event_name == 'push' }}
+        # if it's a PR that's merged, not just a new PR request
+        if: github.event_name == 'push'
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Bump version and push tag
+        if: github.event_name === 'push'
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is automatically generated, equivalent to ${{ github.token }}
+          DRY_RUN: true
+          
