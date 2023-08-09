@@ -25,9 +25,6 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
 
-      - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
-        if: success() # only runs if all previous steps pass
+      - name: Trigger deployment
+        if: ${{ success() }} # only runs if none of the previous steps failed or have been canceled
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
