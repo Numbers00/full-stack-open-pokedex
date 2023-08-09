@@ -39,9 +39,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Bump version and push tag
-        if: github.event_name === 'push'
+        if: github.event_name == 'push'
         uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is automatically generated, equivalent to ${{ github.token }}
           DRY_RUN: true
-          
