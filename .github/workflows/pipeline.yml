@@ -56,14 +56,15 @@ jobs:
     steps:
       - name: Build and tagging successful
         uses: rjstone/discord-webhook-notify@v1
-        if: success()
+        # the always() is necessary to ensure the job runs even if the previous jobs fail
+        if: always() && needs.simple_deployment_pipeline.result == 'success' && needs.tag_release.result == 'success'
         with:
           severity: info
           details: build and tagging successful
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Build and tagging not successful
         uses: rjstone/discord-webhook-notify@v1
-        if: failure()
+        if: always() && (needs.simple_deployment_pipeline.result == 'failure' || needs.tag_release.result == 'failure')
         with:
           severity: error
           details: |
