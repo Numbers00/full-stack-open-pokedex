@@ -77,3 +77,9 @@ jobs:
             Ref: ${{ github.ref }}
             Event: ${{ github.event_name }}
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Echo result
+        if: always()
+        run: |
+          echo "simple_deployment_pipeline: ${{ needs.simple_deployment_pipeline.result }}"
+          echo "tag_release: ${{ needs.tag_release.result }}"
+          echo "${{ needs.simple_deployment_pipeline.result == 'failure' || needs.tag_release.result == 'failure' }}"
