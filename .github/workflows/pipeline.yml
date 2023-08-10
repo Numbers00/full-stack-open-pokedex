@@ -34,10 +34,6 @@ jobs:
         # if it's a PR that's merged, not just a new PR request
         if: github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGES, ' '), '#skip')
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
-      - name: Check non-existent site
-        uses: jtalk/url-health-check-action@v3
-        with:
-          url: https://full-stack-open-pokedex-fld4.onrender.com
       
   tag_release:
     needs: [simple_deployment_pipeline]
