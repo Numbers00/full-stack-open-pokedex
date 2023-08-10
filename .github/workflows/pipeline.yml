@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [master]
     types: [opened, synchronize]
+  
+env:
+  COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
 
 jobs:
   simple_deployment_pipeline:
@@ -29,7 +32,7 @@ jobs:
           wait-on: http://localhost:5000
       - name: Trigger deployment
         # if it's a PR that's merged, not just a new PR request
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGES, ' '), '#skip')
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       
   tag_release:
