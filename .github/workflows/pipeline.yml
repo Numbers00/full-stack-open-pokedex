@@ -37,7 +37,7 @@ jobs:
       - name: Check non-existent site
         uses: jtalk/url-health-check-action@v3
         with:
-          url: https://full-stack-open-pokedex-fld5.onrender.com
+          url: https://full-stack-open-pokedex-fld4.onrender.com
       
   tag_release:
     needs: [simple_deployment_pipeline]
