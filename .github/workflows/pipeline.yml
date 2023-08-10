@@ -49,3 +49,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is automatically generated, equivalent to ${{ github.token }}
           DEFAULT_BUMP: patch
+
+  discord_notification:
+    needs: [simple_deployment_pipeline, tag_release]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Build and tagging successful
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: build and tagging successful
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Build and tagging not successful
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          details: |
+            build and tagging failed
+            Job: ${{ github.job }}
+            Workflow: ${{ github.workflow }}
+            Run ID: ${{ github.run_id }}
+            Run: ${{ github.run_number }}
+            Commit: ${{ github.sha }}
+            Ref: ${{ github.ref }}
+            Event: ${{ github.event_name }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
