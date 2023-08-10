@@ -60,7 +60,7 @@ jobs:
         with:
           severity: info
           details: build and tagging successful
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Build and tagging not successful
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
@@ -75,4 +75,4 @@ jobs:
             Commit: ${{ github.sha }}
             Ref: ${{ github.ref }}
             Event: ${{ github.event_name }}
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
