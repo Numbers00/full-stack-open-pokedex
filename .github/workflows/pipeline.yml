@@ -53,6 +53,7 @@ jobs:
   discord_notification:
     needs: [simple_deployment_pipeline, tag_release]
     runs-on: ubuntu-20.04
+    if: always()
     steps:
       - name: Build and tagging successful
         uses: rjstone/discord-webhook-notify@v1
